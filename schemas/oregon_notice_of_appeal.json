@@ -1,0 +1,114 @@
+{
+  "title": "Oregon Court of Appeals Notice of Appeal",
+  "jurisdiction": "Oregon Court of Appeals / Appellate Court Records Section",
+  "template": "templates/oregon_notice_of_appeal_template.pdf",
+  "pages": 3,
+  "fields": [
+    {
+      "id": "plaintiff_name",
+      "prompt": "Enter the Name of Plaintiff(s) (as styled in Circuit Court):",
+      "type": "text",
+      "page": 1,
+      "x": 72,
+      "y": 685,
+      "font_size": 10
+    },
+    {
+      "id": "plaintiff_role",
+      "prompt": "Plaintiff's Role on Appeal:",
+      "type": "choice",
+      "choices": ["Plaintiff-Appellant", "Plaintiff-Respondent"],
+      "page": 1,
+      "x": 72,
+      "y": 668,
+      "font_size": 10
+    },
+    {
+      "id": "defendant_name",
+      "prompt": "Enter the Name of Defendant(s) (as styled in Circuit Court):",
+      "type": "text",
+      "page": 1,
+      "x": 72,
+      "y": 620,
+      "font_size": 10
+    },
+    {
+      "id": "defendant_role",
+      "prompt": "Defendant's Role on Appeal:",
+      "type": "choice",
+      "choices": ["Defendant-Respondent", "Defendant-Appellant"],
+      "page": 1,
+      "x": 72,
+      "y": 603,
+      "font_size": 10
+    },
+    {
+      "id": "circuit_court_county",
+      "prompt": "Name of Circuit Court (County):",
+      "type": "text",
+      "page": 1,
+      "x": 95,
+      "y": 558,
+      "font_size": 10
+    },
+    {
+      "id": "circuit_court_case_no",
+      "prompt": "Circuit Court Case Number:",
+      "type": "text",
+      "page": 1,
+      "x": 420,
+      "y": 558,
+      "font_size": 10
+    },
+    {
+      "id": "appellant_name_body",
+      "prompt": "Name of Appellant(s) giving notice of appeal:",
+      "type": "text",
+      "page": 1,
+      "x": 95,
+      "y": 486,
+      "font_size": 10
+    },
+    {
+      "id": "judgment_date",
+      "prompt": "Date Judgment was entered in Circuit Court (MM/DD/YYYY):",
+      "type": "text",
+      "page": 1,
+      "x": 450,
+      "y": 486,
+      "font_size": 10
+    },
+    {
+      "id": "trial_judge_name",
+      "prompt": "Name of Trial Court Judge who signed the order/judgment:",
+      "type": "text",
+      "page": 1,
+      "x": 200,
+      "y": 464,
+      "font_size": 10
+    },
+    {
+      "id": "filing_date",
+      "prompt": "Date of Filing Notice of Appeal:",
+      "type": "text",
+      "page": 3,
+      "x": 160,
+      "y": 690,
+      "font_size": 10
+    },
+    {
+      "id": "filing_method",
+      "prompt": "Method of Filing:",
+      "type": "choice",
+      "choices": [
+        "Electronic Filing through the court's eFiling system",
+        "United States Postal Service, ordinary first class mail",
+        "Hand delivery"
+      ],
+      "page": 3,
+      "x": 120,
+      "y": 550,
+      "font_size": 10
+    }
+  ]
+}

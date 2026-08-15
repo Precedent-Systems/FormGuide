@@ -1,0 +1,98 @@
+{
+  "title": "Oregon Circuit Court Small Claims Claim & Notice",
+  "jurisdiction": "Oregon Circuit Court / Small Claims Division",
+  "template": "templates/oregon_small_claims_template.pdf",
+  "pages": 3,
+  "fields": [
+    {
+      "id": "plaintiff_name",
+      "prompt": "Plaintiff Name(s):",
+      "type": "text",
+      "page": 1,
+      "x": 72,
+      "y": 680,
+      "font_size": 10
+    },
+    {
+      "id": "plaintiff_address",
+      "prompt": "Plaintiff Mailing Address & Phone Number:",
+      "type": "text",
+      "page": 1,
+      "x": 72,
+      "y": 655,
+      "font_size": 10
+    },
+    {
+      "id": "defendant_name",
+      "prompt": "Defendant Name(s):",
+      "type": "text",
+      "page": 1,
+      "x": 72,
+      "y": 605,
+      "font_size": 10
+    },
+    {
+      "id": "defendant_address",
+      "prompt": "Defendant Address & Phone Number:",
+      "type": "text",
+      "page": 1,
+      "x": 72,
+      "y": 580,
+      "font_size": 10
+    },
+    {
+      "id": "circuit_court_county",
+      "prompt": "County of Circuit Court:",
+      "type": "text",
+      "page": 1,
+      "x": 120,
+      "y": 740,
+      "font_size": 10
+    },
+    {
+      "id": "case_number",
+      "prompt": "Case Number (assigned by clerk upon filing):",
+      "type": "text",
+      "page": 1,
+      "x": 420,
+      "y": 740,
+      "font_size": 10
+    },
+    {
+      "id": "claim_amount",
+      "prompt": "Total Money Claim Amount ($):",
+      "type": "text",
+      "page": 1,
+      "x": 180,
+      "y": 510,
+      "font_size": 10
+    },
+    {
+      "id": "claim_reason",
+      "prompt": "Brief Description of Claim & Why Defendant Owes Money:",
+      "type": "text",
+      "page": 1,
+      "x": 72,
+      "y": 460,
+      "font_size": 10
+    },
+    {
+      "id": "declaration_date",
+      "prompt": "Date of Declaration (MM/DD/YYYY):",
+      "type": "text",
+      "page": 1,
+      "x": 120,
+      "y": 250,
+      "font_size": 10
+    },
+    {
+      "id": "declarant_signature_name",
+      "prompt": "Print Name of Plaintiff/Declarant:",
+      "type": "text",
+      "page": 1,
+      "x": 300,
+      "y": 230,
+      "font_size": 10
+    }
+  ]
+}
