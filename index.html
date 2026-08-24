@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FormGuide | Open-Source Court Form Automation Engine</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card-bg: #1e293b;
+      --border: #334155;
+      --primary: #38bdf8;
+      --primary-hover: #0284c7;
+      --accent: #818cf8;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --success: #34d399;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding-bottom: 4rem;
+    }
+
+    header {
+      border-bottom: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.8);
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1.25rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .logo-badge {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #000;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.2rem 0.6rem;
+      border-radius: 999px;
+      text-transform: uppercase;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--primary); }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+      color: #0f172a;
+      font-weight: 700;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.5rem;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px -5px rgba(56, 189, 248, 0.4);
+    }
+
+    .hero {
+      max-width: 1200px;
+      margin: 4rem auto 3rem;
+      padding: 0 2rem;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: 3.5rem;
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      margin-bottom: 1.25rem;
+      background: linear-gradient(to right, #ffffff, #94a3b8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      font-size: 1.25rem;
+      color: var(--text-muted);
+      max-width: 750px;
+      margin: 0 auto 2.5rem;
+    }
+
+    .grid {
+      max-width: 1200px;
+      margin: 3rem auto;
+      padding: 0 2rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 2rem;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+      padding: 2rem;
+      transition: border-color 0.2s;
+    }
+
+    .card:hover { border-color: var(--primary); }
+
+    .card-icon {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .card h3 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+    }
+
+    .card p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    .code-block {
+      background: #020617;
+      border: 1px solid var(--border);
+      border-radius: 0.75rem;
+      padding: 1.25rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9rem;
+      color: #38bdf8;
+      overflow-x: auto;
+      margin-top: 1rem;
+    }
+
+    footer {
+      max-width: 1200px;
+      margin: 4rem auto 0;
+      padding: 2rem;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    footer a { color: var(--primary); text-decoration: none; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="nav">
+      <a href="#" class="logo">
+        FormGuide
+        <span class="logo-badge">AGPLv3 Open Source</span>
+      </a>
+      <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#schemas">Federal Schemas</a>
+        <a href="#quickstart">Quickstart</a>
+        <a href="https://github.com/Precedent-Systems/FormGuide" target="_blank" class="btn">View on GitHub</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <h1>Court-Grade Form Automation<br>Without Vendor Lock-In</h1>
+      <p>FormGuide is a free, serverless Python toolkit that converts any official federal or state court PDF into reusable JSON Schemas, merging local profile data with 100% vector point precision.</p>
+
+      <div style="display: flex; gap: 1rem; justify-content: center;">
+        <a href="https://github.com/Precedent-Systems/FormGuide" target="_blank" class="btn">🚀 Get Started on GitHub</a>
+        <a href="#quickstart" style="display: inline-flex; align-items: center; background: var(--card-bg); color: var(--text); padding: 0.75rem 1.5rem; border-radius: 0.5rem; border: 1px solid var(--border); font-weight: 600; text-decoration: none;">Read Documentation</a>
+      </div>
+    </section>
+
+    <section id="features" class="grid">
+      <div class="card">
+        <div class="card-icon">⚡</div>
+        <h3>Instant PDF Field Mapper</h3>
+        <p>Auto-detects AcroForm widgets and visual underline geometries on any downloaded court PDF in under 2 seconds.</p>
+        <div class="code-block">python3 -m formguide.form_mapper --input court_form.pdf</div>
+      </div>
+
+      <div class="card">
+        <div class="card-icon">🔒</div>
+        <h3>100% Local-First Privacy</h3>
+        <p>Keep sensitive litigant data (income, medical records, SSNs) entirely local in structured JSON profiles. Zero cloud database risk.</p>
+        <div class="code-block">profiles/user_profile.json</div>
+      </div>
+
+      <div class="card">
+        <div class="card-icon">🏛️</div>
+        <h3>Court-Grade Vector Overlay</h3>
+        <p>Merges native AcroForm data and ReportLab vector typography directly onto official court templates without pixel distortion.</p>
+        <div class="code-block">python3 -m formguide.filling_engine</div>
+      </div>
+    </section>
+
+    <section id="schemas" style="max-width: 1200px; margin: 2rem auto; padding: 0 2rem;">
+      <h2 style="font-size: 2rem; font-weight: 800; margin-bottom: 1.5rem; text-align: center;">Included Production Schemas</h2>
+      
+      <div style="background: var(--card-bg); border: 1px solid var(--border); border-radius: 1rem; padding: 2rem;">
+        <table style="width: 100%; text-align: left; border-collapse: collapse;">
+          <thead>
+            <tr style="border-bottom: 1px solid var(--border); color: var(--text-muted);">
+              <th style="padding: 1rem 0;">Form Name</th>
+              <th>Jurisdiction</th>
+              <th>Mapped Fields</th>
+              <th>Schema Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom: 1px solid var(--border);">
+              <td style="padding: 1rem 0; font-weight: 600;">JS 44 Civil Cover Sheet</td>
+              <td>U.S. District Court</td>
+              <td>139 AcroForm Fields</td>
+              <td><span style="color: var(--success); font-weight: 600;">✓ Verified Active</span></td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--border);">
+              <td style="padding: 1rem 0; font-weight: 600;">Form AO 240 IFP Application</td>
+              <td>U.S. District Court</td>
+              <td>93 AcroForm Fields</td>
+              <td><span style="color: var(--success); font-weight: 600;">✓ Verified Active</span></td>
+            </tr>
+            <tr>
+              <td style="padding: 1rem 0; font-weight: 600;">Oregon Notice of Appeal</td>
+              <td>Oregon Court of Appeals</td>
+              <td>Vector Overlays</td>
+              <td><span style="color: var(--success); font-weight: 600;">✓ Verified Active</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="quickstart" style="max-width: 1200px; margin: 3rem auto; padding: 0 2rem;">
+      <h2 style="font-size: 2rem; font-weight: 800; margin-bottom: 1rem; text-align: center;">Quickstart CLI Integration</h2>
+      <div class="code-block" style="font-size: 1rem; line-height: 1.8;">
+# 1. Clone the repository
+git clone https://github.com/Precedent-Systems/FormGuide.git
+cd FormGuide
+
+# 2. Fill a court PDF using local profile JSON
+python3 -m formguide.filling_engine \
+  --template templates/js_044.pdf \
+  --schema schemas/federal/us_district_court_js044.json \
+  --profile profiles/annika_eriksson_profile.json \
+  --output Filled_JS44_Civil_Cover_Sheet.pdf
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>FormGuide is developed by <a href="https://github.com/Precedent-Systems" target="_blank">Precedent Systems Org</a> under the GNU AGPLv3 License.</p>
+  </footer>
+
+</body>
+</html>
