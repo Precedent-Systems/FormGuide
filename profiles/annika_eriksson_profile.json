@@ -1,0 +1,36 @@
+{
+  "profile_name": "Annika Eriksson & Donald Buckhout",
+  "personal": {
+    "first_name": "Annika",
+    "last_name": "Eriksson",
+    "co_plaintiff": "Donald Buckhout",
+    "address": "12054 Chapin Ct.",
+    "city": "Oregon City",
+    "state": "OR",
+    "zip": "97045",
+    "county": "Clackamas County",
+    "phone": "503-555-0199",
+    "email": "annika.eriksson.or@gmail.com"
+  },
+  "litigation": {
+    "court": "U.S. District Court for the District of Oregon",
+    "division": "Portland Division",
+    "case_title": "Annika Eriksson and Donald Buckhout v. City of Oregon City, Tony Konkol, Ramon Henderson, Alexandra Troutman, Ashley Fraijo, John Oreskovich, Vance Walker, Jane Smith",
+    "nature_of_suit": "440 Civil Rights: Other & 446 ADA - Other",
+    "statutes": "42 U.S.C. § 1983; 42 U.S.C. § 12132 (ADA Title II/V); 29 U.S.C. § 794; 42 U.S.C. § 3604",
+    "jury_demand": true,
+    "class_action": false
+  },
+  "financial": {
+    "employment": "Employed (Home Care Worker / IHSS)",
+    "take_home_pay": "$533.82 per pay period",
+    "other_income": "$0.00",
+    "cash_assets": "< $100.00",
+    "monthly_expenses": {
+      "housing": "$1,200/mo",
+      "medical": "$180/mo (Graves' disease medication & care)",
+      "utilities_food": "$450/mo"
+    },
+    "hardship_statement": "Applicant lives on severe low-income home-care worker wages. Financial hardship is exacerbated by Defendant City's 510-day illegal water shutoff, concrete vault placement, and fee-stacked administrative surcharges. Applicant cannot pay the $405 federal filing fee without forfeiting basic necessities of life."
+  }
+}

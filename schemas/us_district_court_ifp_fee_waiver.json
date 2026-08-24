@@ -1,0 +1,98 @@
+{
+  "title": "U.S. District Court Application to Proceed In Forma Pauperis (IFP Fee Waiver)",
+  "jurisdiction": "U.S. District Court for the District of Oregon (Portland Division)",
+  "template": "templates/ifp_fee_waiver_template.pdf",
+  "pages": 2,
+  "fields": [
+    {
+      "id": "applicant_name",
+      "prompt": "Full Name of Applicant:",
+      "default": "Annika Eriksson",
+      "type": "text",
+      "page": 1,
+      "x": 72,
+      "y": 710,
+      "font_size": 10
+    },
+    {
+      "id": "case_caption",
+      "prompt": "Case Title / Caption:",
+      "default": "Annika Eriksson & Donald Buckhout v. City of Oregon City, et al.",
+      "type": "text",
+      "page": 1,
+      "x": 72,
+      "y": 680,
+      "font_size": 10
+    },
+    {
+      "id": "employment_status",
+      "prompt": "Employment Status:",
+      "default": "Employed (Home Care Worker / IHSS)",
+      "type": "text",
+      "page": 1,
+      "x": 72,
+      "y": 600,
+      "font_size": 9.5
+    },
+    {
+      "id": "take_home_pay",
+      "prompt": "Gross / Take-Home Pay Per Pay Period:",
+      "default": "$533.82 per pay period",
+      "type": "text",
+      "page": 1,
+      "x": 280,
+      "y": 600,
+      "font_size": 9.5
+    },
+    {
+      "id": "other_income",
+      "prompt": "Other Income (Rent, Interest, Public Assistance):",
+      "default": "$0.00",
+      "type": "text",
+      "page": 1,
+      "x": 72,
+      "y": 520,
+      "font_size": 9.5
+    },
+    {
+      "id": "cash_assets",
+      "prompt": "Cash / Checking / Savings Balance:",
+      "default": "< $100.00",
+      "type": "text",
+      "page": 1,
+      "x": 72,
+      "y": 450,
+      "font_size": 9.5
+    },
+    {
+      "id": "monthly_expenses",
+      "prompt": "Monthly Housing, Medical & Essential Expenses:",
+      "default": "Housing: $1,200/mo; Medical (Graves' disease prescriptions): $180/mo; Utilities & Essential Food: $450/mo. Total expenses exceed net take-home income.",
+      "type": "text",
+      "page": 2,
+      "x": 72,
+      "y": 680,
+      "font_size": 8.5
+    },
+    {
+      "id": "hardship_statement",
+      "prompt": "Statement of Hardship / Special Circumstances:",
+      "default": "Applicant lives on severe low-income home-care worker wages. Financial hardship is exacerbated by Defendant City's 510-day illegal water shutoff, concrete vault placement, and fee-stacked administrative surcharges. Applicant cannot pay the $405 federal filing fee without forfeiting basic necessities of life.",
+      "type": "text",
+      "page": 2,
+      "x": 72,
+      "y": 550,
+      "font_size": 8.5
+    },
+    {
+      "id": "signature_date",
+      "prompt": "Date of Signature:",
+      "default": "August 21, 2026",
+      "type": "text",
+      "page": 2,
+      "x": 72,
+      "y": 200,
+      "font_size": 10
+    }
+  ]
+}

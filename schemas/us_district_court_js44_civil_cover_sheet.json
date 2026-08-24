@@ -1,0 +1,119 @@
+{
+  "title": "U.S. District Court JS 44 Civil Cover Sheet",
+  "jurisdiction": "U.S. District Court for the District of Oregon (Portland Division)",
+  "template": "templates/js44_civil_cover_sheet_template.pdf",
+  "pages": 1,
+  "fields": [
+    {
+      "id": "plaintiffs",
+      "prompt": "Plaintiffs:",
+      "default": "Annika Eriksson and Donald Buckhout",
+      "type": "text",
+      "page": 1,
+      "x": 72,
+      "y": 710,
+      "font_size": 10
+    },
+    {
+      "id": "defendants",
+      "prompt": "Defendants:",
+      "default": "City of Oregon City, Tony Konkol, Ramon Henderson, Alexandra Troutman, Ashley Fraijo, John Oreskovich, Vance Walker, Jane Smith",
+      "type": "text",
+      "page": 1,
+      "x": 310,
+      "y": 710,
+      "font_size": 9
+    },
+    {
+      "id": "plaintiff_county",
+      "prompt": "County of Residence of First Listed Plaintiff:",
+      "default": "Clackamas County, Oregon",
+      "type": "text",
+      "page": 1,
+      "x": 72,
+      "y": 665,
+      "font_size": 9
+    },
+    {
+      "id": "defendant_county",
+      "prompt": "County of Residence of First Listed Defendant:",
+      "default": "Clackamas County, Oregon",
+      "type": "text",
+      "page": 1,
+      "x": 310,
+      "y": 665,
+      "font_size": 9
+    },
+    {
+      "id": "plaintiff_attorney",
+      "prompt": "Plaintiffs' Attorney (or Pro Se Address):",
+      "default": "Annika Eriksson & Donald Buckhout (Pro Se), 12054 Chapin Ct., Oregon City, OR 97045",
+      "type": "text",
+      "page": 1,
+      "x": 72,
+      "y": 625,
+      "font_size": 9
+    },
+    {
+      "id": "basis_of_jurisdiction",
+      "prompt": "Basis of Jurisdiction:",
+      "default": "Federal Question (28 U.S.C. § 1331)",
+      "type": "choice",
+      "choices": ["U.S. Government Plaintiff", "U.S. Government Defendant", "Federal Question (3)", "Diversity (4)"],
+      "page": 1,
+      "x": 72,
+      "y": 560,
+      "font_size": 9
+    },
+    {
+      "id": "nature_of_suit_code",
+      "prompt": "Nature of Suit Codes:",
+      "default": "440 (Civil Rights: Other) & 446 (ADA - Other)",
+      "type": "text",
+      "page": 1,
+      "x": 220,
+      "y": 480,
+      "font_size": 10
+    },
+    {
+      "id": "cause_of_action_cite",
+      "prompt": "Civil Statute Under Which You Are Filing:",
+      "default": "42 U.S.C. § 1983; 42 U.S.C. § 12132 (ADA Title II/V); 29 U.S.C. § 794; 42 U.S.C. § 3604",
+      "type": "text",
+      "page": 1,
+      "x": 72,
+      "y": 280,
+      "font_size": 9
+    },
+    {
+      "id": "cause_of_action_desc",
+      "prompt": "Brief Description of Cause:",
+      "default": "42 U.S.C. § 1983 First & Fourteenth Amendment Retaliation, Due Process, Equal Protection, Title II/V ADA Disability Discrimination, Section 504 Rehabilitation Act, and Fair Housing Act claims arising from retaliatory municipal utility shutoff and concrete vault block.",
+      "type": "text",
+      "page": 1,
+      "x": 72,
+      "y": 255,
+      "font_size": 8.5
+    },
+    {
+      "id": "jury_demand",
+      "prompt": "Jury Demand:",
+      "default": "YES",
+      "type": "text",
+      "page": 1,
+      "x": 380,
+      "y": 215,
+      "font_size": 10
+    },
+    {
+      "id": "signature_date",
+      "prompt": "Date:",
+      "default": "August 21, 2026",
+      "type": "text",
+      "page": 1,
+      "x": 72,
+      "y": 140,
+      "font_size": 10
+    }
+  ]
+}

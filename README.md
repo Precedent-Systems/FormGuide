@@ -4,54 +4,54 @@
 [![Python Version](https://img.shields.io/badge/python-3.9%2B-blue.svg)]()
 [![Court Grade](https://img.shields.io/badge/Court_Grade-Vector_Precision-gold.svg)]()
 
-**FormGuide** is a free, self-hostable, pure-Python alternative to proprietary court-form automation stacks (A2J Author/HotDocs, Gavel, Lawyaw) and jurisdiction-locked state "Guide & File" portals. 
+**FormGuide** (by Precedent Systems Org) is a free, open-source, serverless Python alternative to expensive proprietary legal form stacks (HotDocs, Lawyaw, Gavel) and jurisdiction-locked state portals.
 
-The toolkit converts any static court PDF into an interactive step-by-step interview, then overlays crisp vector typography onto the original form at precise coordinates.
-
----
-
-## 🎯 Why This Matters
-
-Existing court-form solutions create friction in three ways:
-
-1. **Proprietary platforms** (Gavel, Lawyaw, HotDocs/LHI) require expensive subscriptions, vendor lock-in, and proprietary template formats.
-2. **State-maintained portals** are jurisdiction-specific, funded unpredictably, and rarely cover appellate or specialized forms.
-3. **Raw AI filling** lacks reproducible precision; clerks reject misaligned or inconsistent filings.
-
-**FormGuide occupies the gap: court-grade precision without proprietary infrastructure.**
+The toolkit automatically converts any static or interactive court PDF into a reusable JSON Schema, accepts local User Profiles, and populates AcroForms or overlays high-precision vector typography onto official court documents.
 
 ---
 
-## 📊 Differentiation Matrix
+## 🎯 Architectural Principles & Scope Control
 
-| Dimension | Proprietary Tools | State Portals | FormGuide |
-|---|---|---|---|
-| **Cost** | High Subscription | Free (tax-funded) | **Free, open-source (AGPLv3)** |
-| **Jurisdiction Lock** | Vendor ecosystem | Single state | **Any PDF, any court** |
-| **Dependencies** | HotDocs, cloud SaaS | State IT budgets | **Pure Python (`pypdf`, `reportlab`)** |
-| **Schema Editing** | Vendor/trained staff | Court IT only | **Human-readable JSON** |
+FormGuide follows a **bite-sized, Unix-philosophy architecture**:
+
+```
+                       FORMGUIDE 3-TIER ARCHITECTURE
+                                     │
+   ┌─────────────────────────────────┼─────────────────────────────────┐
+   ▼                                 ▼                                 ▼
+1. FORM SCHEMA               2. USER PROFILE DATA              3. FILLING & OVERLAY
+   (Template Geometry)          (Local Instance Data)             (AcroForm + ReportLab)
+   schemas/federal/             profiles/                          formguide/
+   us_district_court_js044.json  user_profile.json                  filling_engine.py
+```
+
+### 💡 Why Local Profiles > OAuth / SaaS Auth
+- **Zero Server Infrastructure:** Storing PII (income, SSNs, medical records, legal claims) in central databases creates privacy liability and compliance bloat.
+- **Local-First Privacy:** User Profiles are simple local JSON files (`user_profile.json`). Users keep 100% control of their sensitive legal data on their own machine.
+- **Bite-Sized MVP:** Keeps the product lightweight, fast, and dependency-free.
 
 ---
 
-## 🏗️ Architecture & Component Overview
+## 🏗️ Repository Layout
 
 ```
 FormGuide/
-├── schemas/                           # Editable Form Field Coordinates & Questions (.json)
-│   ├── oregon_notice_of_appeal.json   # Reference Implementation: Oregon Court of Appeals
-│   └── oregon_small_claims.json       # Oregon Circuit Court Small Claims Packet
+├── schemas/                           # Reusable Template Geometry Schemas (.json)
+│   ├── federal/
+│   │   ├── us_district_court_js044.json       # Federal Civil Cover Sheet (139 mapped fields)
+│   │   └── us_district_court_ao240_ifp.json   # Federal Form AO 240 IFP Application (93 fields)
+│   ├── oregon_notice_of_appeal.json       # Oregon Court of Appeals Notice of Appeal
+│   └── oregon_small_claims.json           # Oregon Circuit Court Small Claims Form
+├── profiles/                          # Local User Instance Profiles (.json)
+│   └── annika_eriksson_profile.json   # Example Litigant Profile
 ├── formguide/
-│   ├── form_mapper.py                 # Automated PDF Underline & Field Detection Engine
-│   ├── wizard.py                      # Interactive Plain-English Q&A Interview Engine
-│   └── overlay_engine.py              # High-Precision ReportLab Vector Overlay Generator
-├── templates/                         # Static Court PDF Templates
-│   └── oregon_notice_of_appeal_template.pdf
+│   ├── form_mapper.py                 # Auto Field Detection Engine (AcroForms & Underlines)
+│   ├── filling_engine.py              # Native AcroForm & Vector Overlay Merger
+│   ├── wizard.py                      # Interactive CLI Q&A Interview Engine
+│   └── overlay_engine.py              # ReportLab Coordinate Overlay Generator
+├── templates/                         # Reference Court PDF Templates
 └── README.md
 ```
-
-- **`form_mapper.py`**: Uses `pypdf`/`pdfplumber` + computer vision to detect underlines, checkboxes, and text bounds on any static PDF. Outputs an editable JSON schema.
-- **`wizard.py`**: Interactive CLI/Web interview engine. Converts plain-English user answers into structured data without requiring pixel knowledge.
-- **`overlay_engine.py`**: `reportlab`/`pypdf` coordinate overlay engine. Merges vector text directly onto the underlying PDF at exact point coordinates.
 
 ---
 
@@ -60,26 +60,41 @@ FormGuide/
 ### 1. Installation
 
 ```bash
-git clone https://github.com/YourUsername/FormGuide.git
+git clone https://github.com/precedent-systems/FormGuide.git
 cd FormGuide
 pip install -r requirements.txt
 ```
 
-### 2. Run the Interactive Notice of Appeal Wizard
+### 2. Auto-Map Any New Court PDF (Instant Extensibility)
 
-Generate an e-filing ready Oregon Court of Appeals Notice of Appeal:
-
-```bash
-python3 -m formguide.wizard --schema schemas/oregon_notice_of_appeal.json --output Oregon_Notice_of_Appeal_Filled.pdf
-```
-
-### 3. Automatically Map Any New Court PDF
-
-Detect underlines and form fields on a new static PDF:
+FormGuide is **automatically extensible to any court form in seconds**. Run `form_mapper.py` against any downloaded PDF to extract field geometry, widget names, and point coordinates:
 
 ```bash
-python3 -m formguide.form_mapper --input templates/my_court_form.pdf --output schemas/my_court_form.json
+python3 -m formguide.form_mapper --input ~/Downloads/my_custom_form.pdf --output schemas/custom/my_form_schema.json
 ```
+
+### 3. Fill Forms Using a Local User Profile
+
+Merge local profile data onto official PDF templates:
+
+```bash
+python3 -m formguide.filling_engine \
+  --template ~/Downloads/js_044.pdf \
+  --schema schemas/federal/us_district_court_js044.json \
+  --profile profiles/annika_eriksson_profile.json \
+  --output Filled_JS44_Civil_Cover_Sheet.pdf
+```
+
+---
+
+## ⚖️ Differentiation Matrix
+
+| Dimension | Proprietary Tools | State Portals | FormGuide |
+|---|---|---|---|
+| **Cost** | High Subscription ($100s/mo) | Tax-Funded | **Free, Open-Source (AGPLv3)** |
+| **Jurisdiction Lock** | Vendor Ecosystem | Single State | **Any Federal or State PDF** |
+| **Data Privacy** | Vendor Cloud SaaS | State Database | **100% Local-First JSON** |
+| **Schema Creation** | Vendor/Trained Staff | Court IT Only | **Auto-Generated via `form_mapper`** |
 
 ---
 
