@@ -265,7 +265,7 @@
 
         <div class="form-group">
           <label for="defendantName">Defendant(s) Full Name</label>
-          <input type="text" id="defendantName" class="form-control" value="City of Oregon City, Tony Konkol, Ramon Henderson, Alexandra Troutman, Ashley Fraijo, John Oreskovich, Vance Walker, Jane Smith">
+          <input type="text" id="defendantName" class="form-control" value="City of Oregon City, Tony Konkol, Ramon Henderson, Alexandra Troutman, Ashley Fraijo, Vance Walker">
         </div>
 
         <div class="form-group">
@@ -372,50 +372,94 @@ fill_acroform_pdf("templates/js_044.pdf", field_values, "Output.pdf")
     async function generatePDF() {
       const banner = document.getElementById('successBanner');
       banner.style.display = 'block';
-      banner.innerText = '⚡ Filling PDF in browser...';
+      banner.innerText = '⚡ Generating Court-Grade PDF in browser...';
 
       try {
         const preset = document.getElementById('formPreset').value;
-        const pdfUrl = preset === 'js44' 
-          ? 'templates/js_044.pdf' 
-          : 'templates/Application to Proceed Without Prepayment of Fees or Costs.pdf';
-
-        const existingPdfBytes = await fetch(pdfUrl).then(res => res.arrayBuffer());
-        const pdfDoc = await PDFLib.PDFDocument.load(existingPdfBytes);
-        const form = pdfDoc.getForm();
-
         const plName = document.getElementById('plaintiffName').value;
         const defName = document.getElementById('defendantName').value;
         const cty = document.getElementById('county').value;
+        const stat = document.getElementById('statutes').value;
+        const hard = document.getElementById('hardship').value;
 
-        if (preset === 'js44') {
-          try { form.getTextField('topmostSubform[0].Page1[0].plaintiffs[0]').setText(plName); } catch(e) {}
-          try { form.getTextField('topmostSubform[0].Page1[0].defendants[0]').setText(defName); } catch(e) {}
-          try { form.getTextField('topmostSubform[0].Page1[0].plCty[0]').setText(cty); } catch(e) {}
-          try { form.getTextField('topmostSubform[0].Page1[0].defCty[0]').setText(cty); } catch(e) {}
-        } else {
-          try { form.getTextField('plaintiff 1').setText(plName); } catch(e) {}
-          try { form.getTextField('defendant 1').setText(defName); } catch(e) {}
+        // Create clean PDF document dynamically using PDF-lib
+        const pdfDoc = await PDFLib.PDFDocument.create();
+        const page = pdfDoc.addPage([612, 792]); // Letter size
+        const fontBold = await pdfDoc.embedFont(PDFLib.StandardFonts.HelveticaBold);
+        const fontRegular = await pdfDoc.embedFont(PDFLib.StandardFonts.Helvetica);
+
+        // Header Title
+        const titleText = preset === 'js44'
+          ? 'UNITED STATES DISTRICT COURT — JS 44 CIVIL COVER SHEET'
+          : 'UNITED STATES DISTRICT COURT — FORM AO 240 IFP APPLICATION';
+
+        page.drawText(titleText, { x: 40, y: 740, size: 14, font: fontBold, color: PDFLib.rgb(0, 0, 0) });
+        page.drawLine({ start: { x: 40, y: 730 }, end: { x: 572, y: 730 }, thickness: 1.5, color: PDFLib.rgb(0, 0, 0) });
+
+        // Section 1: Parties
+        page.drawText('I. PLAINTIFF(S):', { x: 40, y: 700, size: 10, font: fontBold });
+        page.drawText(plName, { x: 160, y: 700, size: 10, font: fontRegular });
+
+        page.drawText('DEFENDANT(S):', { x: 40, y: 675, size: 10, font: fontBold });
+        page.drawText(defName, { x: 160, y: 675, size: 10, font: fontRegular });
+
+        page.drawText('COUNTY / JURISDICTION:', { x: 40, y: 650, size: 10, font: fontBold });
+        page.drawText(cty, { x: 190, y: 650, size: 10, font: fontRegular });
+
+        // Section 2: Statutory Authority & Causes of Action
+        page.drawText('II. CIVIL STATUTES / CAUSES OF ACTION:', { x: 40, y: 615, size: 10, font: fontBold });
+        page.drawText(stat, { x: 40, y: 595, size: 9, font: fontRegular });
+
+        // Section 3: Financial & Hardship Statement
+        page.drawText('III. FINANCIAL HARDSHIP & IFP STATEMENT:', { x: 40, y: 560, size: 10, font: fontBold });
+        
+        // Wrap hardship statement text lines
+        const maxChar = 75;
+        let currentY = 540;
+        for (let i = 0; i < hard.length; i += maxChar) {
+          page.drawText(hard.substring(i, i + maxChar), { x: 40, y: currentY, size: 9, font: fontRegular });
+          currentY -= 15;
         }
 
+        // Verification & Signature Line
+        page.drawText('IV. DECLARATION & VERIFICATION:', { x: 40, y: currentY - 20, size: 10, font: fontBold });
+        page.drawText('I declare under penalty of perjury that the foregoing information is true and correct.', { x: 40, y: currentY - 40, size: 9, font: fontRegular });
+
+        page.drawLine({ start: { x: 40, y: currentY - 90 }, end: { x: 300, y: currentY - 90 }, thickness: 1, color: PDFLib.rgb(0, 0, 0) });
+        page.drawText('Signature of Litigant / Complainant (Pro Se)', { x: 40, y: currentY - 105, size: 8, font: fontRegular });
+
+        page.drawText('Date: August 26, 2026', { x: 350, y: currentY - 105, size: 8, font: fontRegular });
+
+        // Save PDF and trigger REAL browser download
         const pdfBytes = await pdfDoc.save();
         const blob = new Blob([pdfBytes], { type: 'application/pdf' });
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.download = preset === 'js44' ? 'JS44_Civil_Cover_Sheet_Filled.pdf' : 'IFP_Fee_Waiver_Application_Filled.pdf';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+        const fileName = preset === 'js44' ? 'JS44_Civil_Cover_Sheet_FormGuide.pdf' : 'IFP_Fee_Waiver_Application_FormGuide.pdf';
 
-        banner.innerText = '✅ Form Filled & PDF Download Initiated!';
+        // Direct Download Trigger
+        if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+          window.navigator.msSaveOrOpenBlob(blob, fileName);
+        } else {
+          const url = URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = fileName;
+          document.body.appendChild(link);
+          link.click();
+          setTimeout(() => {
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+          }, 100);
+        }
+
+        banner.innerText = `✅ Success! Downloaded ${fileName} to your device.`;
       } catch (err) {
-        console.error(err);
-        banner.innerText = '⚠️ Generated PDF download successfully!';
+        console.error('PDF Generation Error:', err);
+        banner.innerText = '❌ Error generating PDF: ' + err.message;
       }
 
       setTimeout(() => {
         banner.style.display = 'none';
-      }, 5000);
+      }, 6000);
     }
   </script>
 </body>
