@@ -369,98 +369,147 @@ fill_acroform_pdf("templates/js_044.pdf", field_values, "Output.pdf")
       }
     }
 
+    function triggerDownload(bytes, fileName) {
+      // Build a data: URI directly — works even when createObjectURL is blocked
+      const b64 = btoa(String.fromCharCode(...new Uint8Array(bytes)));
+      const dataURI = 'data:application/pdf;base64,' + b64;
+      const link = document.createElement('a');
+      link.href = dataURI;
+      link.download = fileName;
+      link.style.display = 'none';
+      document.body.appendChild(link);
+      link.click();
+      setTimeout(() => document.body.removeChild(link), 200);
+    }
+
     async function generatePDF() {
       const banner = document.getElementById('successBanner');
       banner.style.display = 'block';
-      banner.innerText = '⚡ Generating Court-Grade PDF in browser...';
+      banner.style.color = 'var(--success)';
+      banner.innerText = '⚡ Generating PDF in browser...';
 
-      try {
-        const preset = document.getElementById('formPreset').value;
-        const plName = document.getElementById('plaintiffName').value;
-        const defName = document.getElementById('defendantName').value;
-        const cty = document.getElementById('county').value;
-        const stat = document.getElementById('statutes').value;
-        const hard = document.getElementById('hardship').value;
-
-        // Create clean PDF document dynamically using PDF-lib
-        const pdfDoc = await PDFLib.PDFDocument.create();
-        const page = pdfDoc.addPage([612, 792]); // Letter size
-        const fontBold = await pdfDoc.embedFont(PDFLib.StandardFonts.HelveticaBold);
-        const fontRegular = await pdfDoc.embedFont(PDFLib.StandardFonts.Helvetica);
-
-        // Header Title
-        const titleText = preset === 'js44'
-          ? 'UNITED STATES DISTRICT COURT — JS 44 CIVIL COVER SHEET'
-          : 'UNITED STATES DISTRICT COURT — FORM AO 240 IFP APPLICATION';
-
-        page.drawText(titleText, { x: 40, y: 740, size: 14, font: fontBold, color: PDFLib.rgb(0, 0, 0) });
-        page.drawLine({ start: { x: 40, y: 730 }, end: { x: 572, y: 730 }, thickness: 1.5, color: PDFLib.rgb(0, 0, 0) });
-
-        // Section 1: Parties
-        page.drawText('I. PLAINTIFF(S):', { x: 40, y: 700, size: 10, font: fontBold });
-        page.drawText(plName, { x: 160, y: 700, size: 10, font: fontRegular });
-
-        page.drawText('DEFENDANT(S):', { x: 40, y: 675, size: 10, font: fontBold });
-        page.drawText(defName, { x: 160, y: 675, size: 10, font: fontRegular });
-
-        page.drawText('COUNTY / JURISDICTION:', { x: 40, y: 650, size: 10, font: fontBold });
-        page.drawText(cty, { x: 190, y: 650, size: 10, font: fontRegular });
-
-        // Section 2: Statutory Authority & Causes of Action
-        page.drawText('II. CIVIL STATUTES / CAUSES OF ACTION:', { x: 40, y: 615, size: 10, font: fontBold });
-        page.drawText(stat, { x: 40, y: 595, size: 9, font: fontRegular });
-
-        // Section 3: Financial & Hardship Statement
-        page.drawText('III. FINANCIAL HARDSHIP & IFP STATEMENT:', { x: 40, y: 560, size: 10, font: fontBold });
-        
-        // Wrap hardship statement text lines
-        const maxChar = 75;
-        let currentY = 540;
-        for (let i = 0; i < hard.length; i += maxChar) {
-          page.drawText(hard.substring(i, i + maxChar), { x: 40, y: currentY, size: 9, font: fontRegular });
-          currentY -= 15;
-        }
-
-        // Verification & Signature Line
-        page.drawText('IV. DECLARATION & VERIFICATION:', { x: 40, y: currentY - 20, size: 10, font: fontBold });
-        page.drawText('I declare under penalty of perjury that the foregoing information is true and correct.', { x: 40, y: currentY - 40, size: 9, font: fontRegular });
-
-        page.drawLine({ start: { x: 40, y: currentY - 90 }, end: { x: 300, y: currentY - 90 }, thickness: 1, color: PDFLib.rgb(0, 0, 0) });
-        page.drawText('Signature of Litigant / Complainant (Pro Se)', { x: 40, y: currentY - 105, size: 8, font: fontRegular });
-
-        page.drawText('Date: August 26, 2026', { x: 350, y: currentY - 105, size: 8, font: fontRegular });
-
-        // Save PDF and trigger REAL browser download
-        const pdfBytes = await pdfDoc.save();
-        const blob = new Blob([pdfBytes], { type: 'application/pdf' });
-        const fileName = preset === 'js44' ? 'JS44_Civil_Cover_Sheet_FormGuide.pdf' : 'IFP_Fee_Waiver_Application_FormGuide.pdf';
-
-        // Direct Download Trigger
-        if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-          window.navigator.msSaveOrOpenBlob(blob, fileName);
-        } else {
-          const url = URL.createObjectURL(blob);
-          const link = document.createElement('a');
-          link.href = url;
-          link.download = fileName;
-          document.body.appendChild(link);
-          link.click();
-          setTimeout(() => {
-            document.body.removeChild(link);
-            URL.revokeObjectURL(url);
-          }, 100);
-        }
-
-        banner.innerText = `✅ Success! Downloaded ${fileName} to your device.`;
-      } catch (err) {
-        console.error('PDF Generation Error:', err);
-        banner.innerText = '❌ Error generating PDF: ' + err.message;
+      // Guard: confirm pdf-lib actually loaded
+      if (typeof PDFLib === 'undefined') {
+        banner.style.color = '#f87171';
+        banner.innerText = '❌ PDF library failed to load. Check your internet connection and reload the page.';
+        return;
       }
 
-      setTimeout(() => {
-        banner.style.display = 'none';
-      }, 6000);
+      try {
+        const preset  = document.getElementById('formPreset').value;
+        const plName  = document.getElementById('plaintiffName').value;
+        const defName = document.getElementById('defendantName').value;
+        const cty     = document.getElementById('county').value;
+        const stat    = document.getElementById('statutes').value;
+        const hard    = document.getElementById('hardship').value;
+        const today   = new Date().toLocaleDateString('en-US', { month:'2-digit', day:'2-digit', year:'numeric' });
+
+        const pdfDoc     = await PDFLib.PDFDocument.create();
+        const page       = pdfDoc.addPage([612, 792]);
+        const fontBold   = await pdfDoc.embedFont(PDFLib.StandardFonts.HelveticaBold);
+        const fontReg    = await pdfDoc.embedFont(PDFLib.StandardFonts.Helvetica);
+        const black      = PDFLib.rgb(0, 0, 0);
+        const gray       = PDFLib.rgb(0.4, 0.4, 0.4);
+
+        const title = preset === 'js44'
+          ? 'UNITED STATES DISTRICT COURT — JS 44 CIVIL COVER SHEET'
+          : 'UNITED STATES DISTRICT COURT — FORM AO 240 — IFP APPLICATION';
+
+        // Title bar
+        page.drawText(title, { x: 40, y: 740, size: 13, font: fontBold, color: black });
+        page.drawLine({ start:{x:40,y:730}, end:{x:572,y:730}, thickness:1.5, color:black });
+
+        // Helper: wrap text at word boundary
+        function wrapText(text, maxWidth, fontSize, font) {
+          const words = text.split(' ');
+          const lines = [];
+          let line = '';
+          for (const word of words) {
+            const test = line ? line + ' ' + word : word;
+            const w = font.widthOfTextAtSize(test, fontSize);
+            if (w > maxWidth && line) { lines.push(line); line = word; }
+            else { line = test; }
+          }
+          if (line) lines.push(line);
+          return lines;
+        }
+
+        // Helper: labeled field row
+        function drawField(label, value, y, labelWidth) {
+          page.drawText(label, { x:40, y, size:9, font:fontBold, color:gray });
+          const lines = wrapText(value, 532 - (40 + labelWidth), 9, fontReg);
+          lines.forEach((ln, i) => {
+            page.drawText(ln, { x: 40 + labelWidth, y: y - i*12, size:9, font:fontReg, color:black });
+          });
+          return y - Math.max(1, lines.length) * 14;
+        }
+
+        let y = 710;
+        y = drawField('PLAINTIFF(S):',  plName,  y, 100);
+        y = drawField('DEFENDANT(S):',  defName, y, 100);
+        y = drawField('COUNTY:',        cty,     y, 100);
+
+        y -= 10;
+        page.drawLine({ start:{x:40,y}, end:{x:572,y}, thickness:0.5, color:gray });
+        y -= 16;
+
+        y = drawField('STATUTES:',      stat, y, 100);
+        y = drawField('CAUSE OF ACTION:', 'Civil rights violation under color of law; ADA accommodation denial; unlawful property seizure', y, 130);
+
+        y -= 10;
+        page.drawLine({ start:{x:40,y}, end:{x:572,y}, thickness:0.5, color:gray });
+        y -= 16;
+
+        if (preset === 'ifp') {
+          y = drawField('IFP HARDSHIP:', hard, y, 110);
+          y -= 10;
+          page.drawLine({ start:{x:40,y}, end:{x:572,y}, thickness:0.5, color:gray });
+          y -= 16;
+        }
+
+        // Jury demand & checkboxes
+        page.drawText('JURY DEMAND: ☑ Yes  ☐ No', { x:40, y, size:9, font:fontReg, color:black });
+        page.drawText('CLASS ACTION: ☐ Yes  ☑ No', { x:240, y, size:9, font:fontReg, color:black });
+        page.drawText('ORIGIN: ☑ 1-Original Filing', { x:400, y, size:9, font:fontReg, color:black });
+        y -= 14;
+        page.drawText('BASIS OF JURISDICTION: ☑ 3-Federal Question', { x:40, y, size:9, font:fontReg, color:black });
+        y -= 20;
+
+        page.drawLine({ start:{x:40,y}, end:{x:572,y}, thickness:0.5, color:gray });
+        y -= 20;
+
+        // Declaration
+        page.drawText('DECLARATION', { x:40, y, size:10, font:fontBold, color:black });
+        y -= 14;
+        page.drawText('I declare under penalty of perjury that the foregoing is true and correct.', { x:40, y, size:9, font:fontReg, color:black });
+        y -= 40;
+        page.drawLine({ start:{x:40,y}, end:{x:300,y}, thickness:1, color:black });
+        page.drawLine({ start:{x:350,y}, end:{x:572,y}, thickness:1, color:black });
+        y -= 14;
+        page.drawText('Signature (Pro Se Litigant)', { x:40, y, size:8, font:fontReg, color:gray });
+        page.drawText('Date: ' + today, { x:350, y, size:8, font:fontReg, color:gray });
+
+        // Footer
+        page.drawText('Generated by FormGuide Studio — Precedent Systems (formguide-gamma.vercel.app)', 
+          { x:40, y:30, size:7, font:fontReg, color:gray });
+
+        const pdfBytes = await pdfDoc.save();
+        const fileName = preset === 'js44'
+          ? 'JS44_Civil_Cover_Sheet_FormGuide.pdf'
+          : 'IFP_Fee_Waiver_Application_FormGuide.pdf';
+
+        triggerDownload(pdfBytes, fileName);
+        banner.style.color = 'var(--success)';
+        banner.innerText = `✅ Downloaded "${fileName}" — check your Downloads folder.`;
+      } catch (err) {
+        console.error('PDF Generation Error:', err);
+        banner.style.color = '#f87171';
+        banner.innerText = '❌ PDF generation error: ' + err.message;
+      }
+
+      setTimeout(() => { banner.style.display = 'none'; }, 7000);
     }
   </script>
 </body>
 </html>
+

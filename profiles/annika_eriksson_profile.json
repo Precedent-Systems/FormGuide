@@ -15,11 +15,33 @@
   "litigation": {
     "court": "U.S. District Court for the District of Oregon",
     "division": "Portland Division",
-    "case_title": "Annika Eriksson and Donald Buckhout v. City of Oregon City, Tony Konkol, Ramon Henderson, Alexandra Troutman, Ashley Fraijo, John Oreskovich, Vance Walker, Jane Smith",
-    "nature_of_suit": "440 Civil Rights: Other & 446 ADA - Other",
-    "statutes": "42 U.S.C. § 1983; 42 U.S.C. § 12132 (ADA Title II/V); 29 U.S.C. § 794; 42 U.S.C. § 3604",
+    "case_title": "Annika Eriksson and Donald Buckhout v. City of Oregon City, Tony Konkol, Ramon Henderson, Alexandra Troutman, Ashley Fraijo, John Oreskovich, Vance Walker",
+    "defendants": "City of Oregon City, Tony Konkol, Ramon Henderson, Alexandra Troutman, Ashley Fraijo, John Oreskovich, Vance Walker",
+
+    "_comment_NOS": "Section IV - Nature of Suit: 440 = Civil Rights:Other, 446 = ADA:Other. Use primary code only.",
+    "nature_of_suit_primary_code": "440",
+
+    "_comment_statutes": "Section VI - Cite primary federal statute only (28 U.S.C. § 1331 basis) + short cause description",
+    "primary_statute": "42 U.S.C. §§ 1983, 12132",
+    "cause_of_action": "Civil rights: municipal water shutoff, ADA accommodation denial, property seizure under color of law",
+
+    "_comment_origin": "Section V - Origin: 1=Original, 2=Removed, 3=Remanded, 4=Reinstated, 5=Transfer, 6=Multidistrict",
+    "origin_code": "1",
+
+    "_comment_jury": "Section VII - Jury demand (Yes/No)",
     "jury_demand": true,
-    "class_action": false
+
+    "_comment_class": "Section V checkbox - class action",
+    "class_action": false,
+
+    "_comment_q2": "Section II - Basis of Jurisdiction: 1=US Govt Pl, 2=US Govt Def, 3=Fed Question, 4=Diversity. Use 3.",
+    "jurisdiction_basis_code": "3",
+
+    "_comment_q5": "Section V - Related case? 0=No, 1=Yes",
+    "related_case": "0",
+
+    "demand_dollars": "75000",
+    "check_jury_yes": true
   },
   "financial": {
     "employment": "Employed (Home Care Worker / IHSS)",

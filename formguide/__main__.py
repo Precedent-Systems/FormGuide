@@ -61,19 +61,58 @@ def main():
                 prof = json.load(f)
             
             # Key preset shortcuts
+            lit  = prof.get("litigation", {})
+            pers = prof.get("personal", {})
+            fin  = prof.get("financial", {})
+
             if preset_key == "js44":
+                pl_name  = f"{pers.get('first_name','')} {pers.get('last_name','')} and {pers.get('co_plaintiff','')}".strip()
+                pro_se   = f"{pers.get('first_name','')} {pers.get('last_name','')} (Pro Se), {pers.get('address','')}, {pers.get('city','')}, {pers.get('state','')} {pers.get('zip','')}".strip()
+
                 field_map = {
-                    "topmostSubform[0].Page1[0].plaintiffs[0]": prof.get("personal", {}).get("first_name", "") + " " + prof.get("personal", {}).get("last_name", "") + " and " + prof.get("personal", {}).get("co_plaintiff", ""),
-                    "topmostSubform[0].Page1[0].defendants[0]": prof.get("litigation", {}).get("defendants", "City of Oregon City, et al."),
-                    "topmostSubform[0].Page1[0].plCty[0]": prof.get("personal", {}).get("county", "Clackamas County"),
-                    "topmostSubform[0].Page1[0].defCty[0]": prof.get("personal", {}).get("county", "Clackamas County"),
-                    "topmostSubform[0].Page1[0].attorneysPL[0]": prof.get("personal", {}).get("first_name", "") + " " + prof.get("personal", {}).get("last_name", "") + " (Pro Se), " + prof.get("personal", {}).get("address", "")
+                    # Section I — Parties
+                    "topmostSubform[0].Page1[0].plaintiffs[0]":   pl_name,
+                    "topmostSubform[0].Page1[0].defendants[0]":   lit.get("defendants", "City of Oregon City, et al."),
+                    "topmostSubform[0].Page1[0].plCty[0]":        pers.get("county", "Clackamas County"),
+                    "topmostSubform[0].Page1[0].defCty[0]":       pers.get("county", "Clackamas County"),
+                    "topmostSubform[0].Page1[0].attorneysPL[0]":  pro_se,
+
+                    # Section II — Basis of Jurisdiction (RadioButton export value)
+                    # 1=US Govt Pl, 2=US Govt Def, 3=Fed Question, 4=Diversity
+                    "topmostSubform[0].Page1[0].q2[0]":           lit.get("jurisdiction_basis_code", "3"),
+
+                    # Section III — Citizenship (checkboxes S3P1–S3P6, S3D1–S3D6)
+                    # For federal question suits these are typically left blank
+                    # (set them explicitly in profile if needed)
+
+                    # Section V — Origin (RadioButton export value: "1" = Original Filing)
+                    "topmostSubform[0].Page1[0].q4[0]":           lit.get("origin_code", "1"),
+
+                    # Section V — Class Action checkbox
+                    "topmostSubform[0].Page1[0].classAction[0]":  lit.get("class_action", False),
+
+                    # Section V — Related case (RadioButton: "0"=No, "1"=Yes)
+                    "topmostSubform[0].Page1[0].q5[0]":           lit.get("related_case", "0"),
+
+                    # Section VI — Cause of Action
+                    "topmostSubform[0].Page1[0].S6stat[0]":       lit.get("primary_statute", "42 U.S.C. §§ 1983, 12132"),
+                    "topmostSubform[0].Page1[0].S6cause[0]":      lit.get("cause_of_action", "Civil rights violation under color of law"),
+
+                    # Section VII — Jury demand (RadioButton: "1"=Yes, "2"=No)
+                    "topmostSubform[0].Page1[0].jury[0]":         "1" if lit.get("jury_demand", True) else "2",
+
+                    # Section VII — Demand amount
+                    "topmostSubform[0].Page1[0].S7demand[0]":     lit.get("demand_dollars", "75000"),
+
+                    # Date & signature
+                    "topmostSubform[0].Page1[0].date[0]":         __import__("datetime").date.today().strftime("%m/%d/%Y"),
+                    "topmostSubform[0].Page1[0].sig[0]":          f"{pers.get('first_name','')} {pers.get('last_name','')} (Pro Se)",
                 }
             else:
                 field_map = {
-                    "plaintiff 1": prof.get("personal", {}).get("first_name", "") + " " + prof.get("personal", {}).get("last_name", ""),
+                    "plaintiff 1": f"{pers.get('first_name','')} {pers.get('last_name','')}",
                     "defendant 1": "City of Oregon City, et al.",
-                    "Amount of takehome salary or wages": prof.get("financial", {}).get("take_home_pay", "$533.82/period")
+                    "Amount of takehome salary or wages": fin.get("take_home_pay", "$533.82/period")
                 }
             
             fill_acroform_pdf(preset["template"], field_map, out_pdf)
