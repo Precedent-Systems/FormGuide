@@ -29,6 +29,10 @@ PRESET_SCHEMAS = {
         "template": os.path.join(FORMGUIDE_ROOT, "templates", "Application to Proceed Without Prepayment of Fees or Costs.pdf"),
         "schema": os.path.join(FORMGUIDE_ROOT, "schemas", "federal", "us_district_court_ao240_ifp.json"),
         "default_out": "IFP_Fee_Waiver_Application_Filled.pdf"
+    },
+    "garnishment-challenge": {
+        "generator": "formguide.presets.oregon_challenge_garnishment",
+        "default_out": "Oregon_Challenge_to_Garnishment_FILLED.pdf"
     }
 }
 
@@ -38,10 +42,11 @@ def main():
     if len(sys.argv) < 2 or sys.argv[1] in ["-h", "--help", "help"]:
         print("\n⚖️ FormGuide Simplified CLI")
         print("--------------------------------------------------")
-        print("  formguide fill js44 [profile.json] [out.pdf]   Fill Federal JS 44 Cover Sheet")
-        print("  formguide fill ifp  [profile.json] [out.pdf]   Fill Federal IFP Fee Waiver Form")
-        print("  formguide map <form.pdf> [schema.json]        Auto-detect & map fields from any PDF")
-        print("  formguide wizard                              Run interactive interview")
+        print("  formguide fill js44 [profile.json] [out.pdf]    Fill Federal JS 44 Cover Sheet")
+        print("  formguide fill ifp  [profile.json] [out.pdf]    Fill Federal IFP Fee Waiver Form")
+        print("  formguide fill garnishment-challenge [out.pdf]   Oregon Challenge to Garnishment")
+        print("  formguide map <form.pdf> [schema.json]           Auto-detect & map fields from any PDF")
+        print("  formguide wizard                                 Run interactive interview")
         print("--------------------------------------------------\n")
         return
 
@@ -49,17 +54,27 @@ def main():
 
     if cmd == "fill":
         preset_key = sys.argv[2].lower() if len(sys.argv) > 2 else "js44"
-        profile_path = sys.argv[3] if len(sys.argv) > 3 else DEFAULT_PROFILE
-        
         if preset_key in PRESET_SCHEMAS:
             preset = PRESET_SCHEMAS[preset_key]
+
+            # Generator-based presets (e.g. garnishment-challenge) — delegate entirely
+            if "generator" in preset:
+                import importlib
+                mod = importlib.import_module(preset["generator"])
+                out_pdf = sys.argv[3] if len(sys.argv) > 3 else preset["default_out"]
+                print(f"🚀 Generating {preset_key.upper()} document...")
+                mod.build(os.path.abspath(out_pdf))
+                print(f"✅ Created: {out_pdf}")
+                return
+
+            profile_path = sys.argv[3] if len(sys.argv) > 3 else DEFAULT_PROFILE
             out_pdf = sys.argv[4] if len(sys.argv) > 4 else preset["default_out"]
             print(f"🚀 Filling {preset_key.upper()} form using profile: {os.path.basename(profile_path)}")
-            
+
             # Simple direct field mapping
             with open(profile_path, 'r', encoding='utf-8') as f:
                 prof = json.load(f)
-            
+
             # Key preset shortcuts
             lit  = prof.get("litigation", {})
             pers = prof.get("personal", {})
