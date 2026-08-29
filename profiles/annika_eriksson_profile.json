@@ -44,7 +44,10 @@
     "check_jury_yes": true
   },
   "financial": {
-    "employment": "Employed (Home Care Worker / IHSS)",
+    "employment": "Home Care Worker (State of Oregon Department of Human Services - Seniors and People with Disabilities Office)",
+    "employer": "Patricia Clarke (Consumer of Services)",
+    "employer_address": "2220 Gilman Ave, Oregon City, OR 97045",
+    "payroll_issuer": "State of Oregon DHS / Seniors & People with Disabilities",
     "take_home_pay": "$533.82 per pay period",
     "other_income": "$0.00",
     "cash_assets": "< $100.00",

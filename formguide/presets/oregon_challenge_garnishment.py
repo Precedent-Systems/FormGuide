@@ -44,7 +44,7 @@ CASE = {
 EXEMPTIONS = [
     ('1', 'WAGE EXEMPTION — ORS 18.375 / ORS 18.385',
      'Debtor claims exemption of disposable earnings. Debtor\'s take-home wages are '
-     'approximately $533.82 per pay period as an IHSS home-care worker. Under ORS 18.385, '
+     'approximately $533.82 per pay period as a State of Oregon DHS Seniors & People with Disabilities Home Care Worker. Under ORS 18.385, '
      'the exempt amount is the GREATER of (a) 75% of disposable earnings (~$400.37/period) '
      'OR (b) $338.00 per workweek. Debtor\'s total earnings fall at or below the '
      'statutory floor exemption; accordingly, ALL wages are exempt from garnishment.'),

@@ -27,7 +27,7 @@
     {
       "id": "employment_status",
       "prompt": "Employment Status:",
-      "default": "Employed (Home Care Worker / IHSS)",
+      "default": "Home Care Worker (State of Oregon DHS - Seniors & People with Disabilities)",
       "type": "text",
       "page": 1,
       "x": 72,
