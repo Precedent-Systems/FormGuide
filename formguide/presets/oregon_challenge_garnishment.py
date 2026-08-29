@@ -43,10 +43,10 @@ CASE = {
 # ORS 18.375/18.385 — 75% of disposable earnings + wage floor
 EXEMPTIONS = [
     ('1', 'WAGE EXEMPTION — ORS 18.375 / ORS 18.385',
-     'Debtor claims exemption of disposable earnings. Debtor\'s take-home wages are '
-     'approximately $533.82 per pay period as a State of Oregon DHS Seniors & People with Disabilities Home Care Worker. Under ORS 18.385, '
+     'Debtor claims exemption of disposable earnings. Debtor earns $21.25/hr working ~32 hours per 2-week pay period '
+     '($680.00 gross / ~$533.82 net after taxes, SEIU union dues, and OregonSaves contributions). Under ORS 18.385, '
      'the exempt amount is the GREATER of (a) 75% of disposable earnings (~$400.37/period) '
-     'OR (b) $338.00 per workweek. Debtor\'s total earnings fall at or below the '
+     'OR (b) $338.00 per workweek ($676.00 biweekly). Debtor\'s earnings fall below the '
      'statutory floor exemption; accordingly, ALL wages are exempt from garnishment.'),
 
     ('13', 'VEHICLE — ORS 18.345(1)(d)',
@@ -193,12 +193,13 @@ def build(output_path):
     y -= 13
 
     rows = [
-        ('Gross wages per pay period',         '$533.82'),
-        ('Estimated take-home (disposable)',    '~$533.82'),
-        ('75% of disposable earnings',         '~$400.37'),
-        ('Statutory weekly floor (current)',   '$338.00/week'),
-        ('Exempt amount (greater of above)',   'ALL wages exempt'),
-        ('Amount subject to garnishment',      '$0.00'),
+        ('Gross wages ($21.25/hr × 32 hrs / 2-wk period)', '$680.00 biweekly ($340.00/wk)'),
+        ('Deductions (Taxes, SEIU Union Dues, OregonSaves)', '~$146.18 / period'),
+        ('Net disposable earnings per pay period',          '~$533.82 biweekly (~$266.91/wk)'),
+        ('75% of disposable earnings protection',            '~$400.37 / period'),
+        ('Statutory weekly floor exemption (current)',      '$338.00/wk ($676.00 biweekly)'),
+        ('Exempt amount (greater of 75% or $338/wk floor)', 'ALL wages exempt'),
+        ('Amount subject to garnishment',                 '$0.00'),
     ]
     col1 = m + 10
     col2 = W - m - 120
