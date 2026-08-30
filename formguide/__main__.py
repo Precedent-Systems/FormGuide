@@ -33,6 +33,10 @@ PRESET_SCHEMAS = {
     "garnishment-challenge": {
         "generator": "formguide.presets.oregon_challenge_garnishment",
         "default_out": "Oregon_Challenge_to_Garnishment_FILLED.pdf"
+    },
+    "snap-hearing": {
+        "generator": "formguide.presets.oregon_snap_hearing_request",
+        "default_out": "Oregon_SNAP_Contested_Hearing_Request_FILLED.pdf"
     }
 }
 
@@ -45,6 +49,7 @@ def main():
         print("  formguide fill js44 [profile.json] [out.pdf]    Fill Federal JS 44 Cover Sheet")
         print("  formguide fill ifp  [profile.json] [out.pdf]    Fill Federal IFP Fee Waiver Form")
         print("  formguide fill garnishment-challenge [out.pdf]   Oregon Challenge to Garnishment")
+        print("  formguide fill snap-hearing [out.pdf]            Oregon SNAP Contested Case Hearing Request")
         print("  formguide map <form.pdf> [schema.json]           Auto-detect & map fields from any PDF")
         print("  formguide wizard                                 Run interactive interview")
         print("--------------------------------------------------\n")
