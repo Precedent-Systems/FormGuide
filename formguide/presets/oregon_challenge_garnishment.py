@@ -151,46 +151,48 @@ def build(output_path):
         'I hereby challenge the garnishment and claim the following property as exempt from '
         'execution under Oregon law.'
     )
-    y = wrapped_text(c, intro, m, y, rw, size=9, leading=13)
-    y -= 16
+    y = wrapped_text(c, intro, m, y, rw, size=9, leading=12)
+    y -= 8
 
     # Debtor info block
     hline(c, m, W-m, y+4, 0.5, colors.HexColor('#888888'))
     y -= 4
     c.setFont('Helvetica-Bold', 9)
     c.drawString(m, y, 'DEBTOR INFORMATION')
-    y -= 13
+    y -= 11
     label_field(c, 'Name:', DEBTOR['name'],     m, y)
-    y -= 12
+    y -= 11
     label_field(c, 'Address:', DEBTOR['address'], m, y)
-    y -= 12
+    y -= 11
     label_field(c, '', DEBTOR['city_state'], m, y)
-    y -= 12
+    y -= 11
     label_field(c, 'Phone:', DEBTOR['phone'], m, y)
-    y -= 12
-    label_field(c, 'Garnishment Total Claimed:', CASE['total'], m, y)
-    y -= 20
+    c.setFont('Helvetica-Bold', 9)
+    c.drawString(m + 220, y, 'Garnishment Total Claimed:')
+    c.setFont('Helvetica', 9)
+    c.drawString(m + 360, y, CASE['total'])
+    y -= 10
 
     # Exemptions
     hline(c, m, W-m, y+4, 0.5, colors.HexColor('#888888'))
     y -= 4
     c.setFont('Helvetica-Bold', 10)
     c.drawString(m, y, 'CLAIMED EXEMPTIONS')
-    y -= 16
+    y -= 8
 
     for i, (num, title, body) in enumerate(EXEMPTIONS, 1):
         c.setFont('Helvetica-Bold', 9.5)
         c.drawString(m, y, f'{i}.  Exemption No. {num} — {title}')
-        y -= 13
-        y = wrapped_text(c, body, m + 16, y, rw - 16, size=8.5, leading=12)
-        y -= 12
+        y -= 11
+        y = wrapped_text(c, body, m + 16, y, rw - 16, size=8.5, leading=11)
+        y -= 6
 
     # Wage calculation table
     hline(c, m, W-m, y+4, 0.5, colors.HexColor('#bbbbbb'))
-    y -= 8
+    y -= 4
     c.setFont('Helvetica-Bold', 9)
     c.drawString(m, y, 'WAGE EXEMPTION CALCULATION (ORS 18.385)')
-    y -= 13
+    y -= 11
 
     rows = [
         ('Gross wages ($21.25/hr × 32 hrs / 2-wk period)', '$680.00 biweekly ($340.00/wk)'),
@@ -202,34 +204,33 @@ def build(output_path):
         ('Amount subject to garnishment',                 '$0.00'),
     ]
     col1 = m + 10
-    col2 = W - m - 120
     c.setFont('Helvetica', 8.5)
     for label, val in rows:
         c.drawString(col1, y, label)
         c.drawRightString(W - m, y, val)
         hline(c, col1, W-m, y-2, 0.25, colors.HexColor('#dddddd'))
-        y -= 12
-    y -= 10
+        y -= 11
+    y -= 6
 
     # Declaration
     hline(c, m, W-m, y+4, 0.5, colors.HexColor('#888888'))
-    y -= 8
+    y -= 4
     c.setFont('Helvetica-Bold', 9)
     c.drawString(m, y, 'DECLARATION')
-    y -= 13
+    y -= 11
     decl = (
         'I declare under penalty of perjury under the laws of the State of Oregon that the '
         'foregoing is true and correct, and that the property identified above is exempt from '
         'garnishment under Oregon law.'
     )
-    y = wrapped_text(c, decl, m, y, rw, size=8.5, leading=12)
-    y -= 28
+    y = wrapped_text(c, decl, m, y, rw, size=8.5, leading=11)
+    y -= 16
 
     # Signature block
     sig_x = m
     hline(c, sig_x, sig_x + 220, y, 1)
     hline(c, sig_x + 260, W - m, y, 1)
-    y -= 12
+    y -= 10
     c.setFont('Helvetica', 8)
     c.drawString(sig_x, y, 'Signature of Debtor (Pro Se)')
     c.drawString(sig_x + 260, y, f'Date: {TODAY_SHORT}')
