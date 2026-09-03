@@ -68,13 +68,21 @@ def main():
     print("🚀 Running FormGuide Court-Grade Form Validation Suite...")
 
     js44_schema = os.path.join(SCHEMAS_DIR, "us_district_court_js44_civil_cover_sheet.json")
-    ifp_schema = os.path.join(SCHEMAS_DIR, "us_district_court_ifp_fee_waiver.json")
+    ifp_schema = os.path.join(SCHEMAS_DIR, "federal", "us_district_court_ao240_ifp.json")
 
     js44_data, js44_answers = validate_schema(js44_schema)
     export_formguide_summary("JS 44 Civil Cover Sheet", js44_data, js44_answers, os.path.join(OUTPUT_DIR, "FORMGUIDE_JS44_CIVIL_COVER_SHEET_SUMMARY.md"))
 
     ifp_data, ifp_answers = validate_schema(ifp_schema)
     export_formguide_summary("IFP Fee Waiver Application", ifp_data, ifp_answers, os.path.join(OUTPUT_DIR, "FORMGUIDE_IFP_FEE_WAIVER_SUMMARY.md"))
+
+    try:
+        from formguide.presets.us_district_court_js044 import build_js44_cover_sheet
+        build_js44_cover_sheet()
+        from formguide.presets.us_district_court_ao240_ifp import build_ao240_ifp
+        build_ao240_ifp()
+    except Exception as e:
+        print(f"⚠️ Warning building federal package presets: {e}")
 
     print("\n==================================================")
     print("✅ FORMGUIDE RIGORS & VALIDATION COMPLETE!")
@@ -83,3 +91,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
