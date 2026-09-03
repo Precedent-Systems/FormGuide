@@ -44,10 +44,10 @@
     "check_jury_yes": true
   },
   "financial": {
-    "employment": "Home Care Worker (State of Oregon Department of Human Services - Seniors and People with Disabilities Office)",
-    "employer": "Patricia Clarke (Consumer of Services)",
+    "employment": "Home Care Worker (State of Oregon DHS / Seniors & People with Disabilities)",
+    "employer": "Patricia Clarke",
     "employer_address": "2220 Gilman Ave, Oregon City, OR 97045",
-    "payroll_issuer": "State of Oregon DHS / Seniors & People with Disabilities",
+    "payroll_issuer": "Patricia Clarke (State of Oregon DHS Home Care Consumer), 2220 Gilman Ave, Oregon City, OR 97045",
     "hourly_rate": "$21.25/hr",
     "hours_per_pay_period": "32 hours per 2-week pay period",
     "gross_pay": "$680.00 per pay period ($340.00/week)",
