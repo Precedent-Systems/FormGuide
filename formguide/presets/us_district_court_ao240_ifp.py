@@ -51,12 +51,12 @@ def build_single_ifp(profile_path, out_filename):
         "Are you currently incarcerated": "No",
         "place of incarceration": "N/A — APPLICANT IS NOT INCARCERATED",
 
-        # Page 1: Q2 Current Employment
+        # Page 1: Q2 Current Employment (Note: court PDF template swapped internal field names!)
         "Are you currently employed": "Yes_2" if is_employed else "No_2",
-        "Employers address": f"{financial.get('employer', 'Patricia Clarke')}, {financial.get('employer_address', '2220 Gilman Ave, Oregon City, OR 97045')} (State of Oregon DHS)" if is_employed else "N/A — UNEMPLOYED",
-        "specify pay period": financial.get("hours_per_pay_period", "32 hrs / 2-week pay period") if is_employed else "N/A",
-        "Amount of takehome pay or wages": financial.get("take_home_pay", "$0.00") if is_employed else "$0.00",
-        "pay period": "2-week pay period" if is_employed else "N/A",
+        "Employers address": f"{financial.get('employer', 'Patricia Clarke')} (State of Oregon DHS Consumer)" if is_employed else "N/A — UNEMPLOYED",
+        "specify pay period": financial.get("employer_address", "2220 Gilman Ave, Oregon City, OR 97045") if is_employed else "N/A",
+        "Amount of takehome pay or wages": "533.82" if is_employed else "0.00",
+        "pay period": "2 weeks" if is_employed else "N/A",
 
         # Page 2: Q2 Employment Checkboxes & Employer Details
         "Yes_3": "On" if is_employed else "Off",
@@ -73,9 +73,9 @@ def build_single_ifp(profile_path, out_filename):
         "spouse take home amount": "N/A — Single Applicant",
         "spouse pay period": "N/A",
         "If the answer is Yes please explain below 1": (
-            f"Employer: {financial.get('employer')} (Consumer of Services, State of Oregon DHS Home Care). "
+            f"Employer: {financial.get('employer')} (Consumer of Services, State of Oregon DHS Home Care, 2220 Gilman Ave, Oregon City, OR 97045). "
             f"Gross pay: {financial.get('gross_pay')}. Net biweekly take-home: {financial.get('take_home_pay')}. "
-            f"Deductions: {financial.get('payroll_deductions', 'Standard withholdings')}. "
+            f"Hours: 32 hours per 2-week pay period ($21.25/hr). "
             "Applicant is employed part-time as a home care worker, NOT self-employed."
         ) if is_employed else "Applicant is unemployed / disabled with $0.00 earned wages.",
         "If the answer is No please explain below 1": "N/A",
